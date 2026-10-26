@@ -1,16 +1,7 @@
 # PGFM
 
 Physics-guided flow matching for total electron content (TEC) forecasting.
-This repository contains the Proposed model extracted from TEC_demo: a causal
-ConvGRU physics forecaster followed by a conditional, one-hour piecewise flow
-model with a learned spatial mixing weight. The one-hour model rolls forward
-autoregressively for a 24-hour forecast.
-
-Only the model, its data readers, training, prediction and evaluation are included.
-Training data, checkpoints, cached forecasts, benchmark models and historical
-figures are excluded. The source equations and checkpoint parameter names are
-preserved. Default configurations select the best PGFM checkpoint by full
-24-hour rollout validation MSE each epoch.
+This repository contains the Proposed model.
 
 ## Installation
 
@@ -90,10 +81,8 @@ MSE(u, u_target)
 + lambda_phys * MSE(u, u_phys)
 ```
 
-Both regularization coefficients default to `1e-4`. The ConvGRU is trained
-separately to predict physical RHS residuals relative to a diurnal baseline.
-Its exported predictions are fixed during PGFM training; gradients do not pass
-back into ConvGRU. The U-Net data head and mixing head are trained jointly.
+Both regularization coefficients default to `1e-4`.
+The U-Net data head and mixing head are trained jointly.
 
 | Component | Implementation |
 | --- | --- |
@@ -105,17 +94,23 @@ back into ConvGRU. The U-Net data head and mixing head are trained jointly.
 | Training and evaluation entry points | `pgfm/cli/` |
 
 Evaluation reports grid-weighted overall and per-lead metrics in TECU, together
-with relative-error metrics. Deterministic CRPS equals MAE. These metrics do not
-use latitude area weighting. The release makes no numerical skill claim without
-training data and checkpoints.
+with relative-error metrics. Deterministic CRPS equals MAE.
+
+## Visualization
+
+The [visualization](visualization/) directory contains scripts, plotting data and
+exported figures for the model results:
+
+- `errors/`: forecast errors across the 24-hour horizon.
+- `latitude/`: error metrics by latitude, with background TEC profiles.
+- `lambda/`: latitude profiles and spatial maps of the mixing weight.
+- `velocity/`: target velocity, weighted data and physics contributions, and fused velocity.
+- `pole_o+/`: net O⁺ column rate of changing over the North and South Poles.
+
+Run the Python script in each folder to regenerate its figures. Plotting requires
+Matplotlib and pandas in addition to the model dependencies.
 
 ## Inference integration
-
-This package supplies model code, not pretrained weights or a serving API.
-Deployment requires compatible ConvGRU and PGFM checkpoints, their saved
-normalization statistics, historical inputs and an application-specific inference
-entry point. The CLI evaluation path reads future observations to score forecasts
-and is not a standalone live forecasting interface.
 
 `PiecewisePhysFlowMatchingUNet.forward` produces the fused velocity; the trainer's
 `sample_one_hour` integrates it and `rollout_hours` produces autoregressive TEC
