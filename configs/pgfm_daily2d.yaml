@@ -1,0 +1,100 @@
+# Paths are relative to the working directory. Run commands from the project root.
+method: fm
+fm:
+  backbone: piecewise_condphys_fm
+  ode_steps: 24
+  use_amp: true
+  grad_clip_norm: 1.0
+  lambda_balance: 1e-4
+  lambda_phys: 1e-4
+data:
+  cache_dir: data/daily_2d
+  past_hours: 24
+  horizon_hours: 24
+  bg_scalar_keys:
+  - kp
+  - f107d
+  - hpower
+  - ctpoten
+  bg_map_keys: []
+  phys_term_keys:
+  - op_prod_tecu_rate
+  - op_loss_tecu_rate
+  - op_drift_tecu_rate
+  - op_wind_tecu_rate
+  phys_uv_keys:
+  - ui_exb_layer_mean
+  - vi_exb_layer_mean
+  strict_required_physics: true
+  future_physics_mode: convgru
+  future_physics_blend_last_hour_weight: 0.5
+  future_physics_convgru_train_path: outputs/pgfm_daily2d/physics/forecasts_train.npz
+  future_physics_convgru_val_path: outputs/pgfm_daily2d/physics/forecasts_val.npz
+  monthly_origin_split:
+    val:
+    - 10
+    - 11
+    test:
+    - 20
+    - 21
+    - 22
+  future_physics_convgru_test_path: outputs/pgfm_daily2d/physics/forecasts_test.npz
+physics_forecaster:
+  history_hours: 24
+  horizon_hours: 24
+  sequence_stride: 4
+  hidden_channels:
+  - 32
+  - 32
+  kernel_size: 3
+  dropout: 0.0
+  batch_size: 32
+  eval_batch_size: 16
+  epochs: 30
+  anchor_stride_hours: 1
+  max_train_samples: 0
+  max_val_samples: 0
+  shuffle: false
+  lr: 1e-4
+  weight_decay: 1e-5
+  residual_weight: 0.25
+  use_amp: true
+  num_workers: 0
+  pin_memory: false
+  max_cached_days: 4
+  device: auto
+  seed: 1234
+  outdir: outputs/pgfm_daily2d/physics
+train:
+  batch_size: 32
+  epochs: 100
+  lr: 1e-4
+  num_workers: 0
+  device: auto
+  run_name: pgfm
+  outdir: outputs/pgfm_daily2d
+  seed: 1234
+  save_every: 5
+  pin_memory: false
+  persistent_workers: false
+  prefetch_factor: 2
+  eval_batch_size: 4
+  max_cached_days: 4
+  rollout_eval_hours: 24
+  rollout_eval_every: 1
+  rollout_eval_max_batches: 0
+eval:
+  split: val
+  start_day_idx: 0
+  days: 0
+  start_hour: 0
+  mode: truth
+  future_physics_mode: convgru
+  future_physics_blend_last_hour_weight: 0.5
+  block_step_hours: 1
+  eval_steps: 24
+  outdir: outputs/pgfm_daily2d
+model:
+  hidden: 64
+  dropout: 0.0
+  grad_checkpoint: false
