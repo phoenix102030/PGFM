@@ -1,7 +1,7 @@
 # PGFM
 
 Physics-guided flow matching for total electron content (TEC) forecasting.
-This repository contains the Proposed model.
+This repository contains the proposed model, experiment results and visualization.
 
 ## Installation
 
