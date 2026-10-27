@@ -5,8 +5,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 P=Path(__file__).resolve().parent
-r=pd.read_csv(P/'lambda_latitude.csv').sort_values('latitude')
-z=np.load(P/'lambda_maps.npz')
+DATA=P.parents[1]/'data'
+r=pd.read_csv(DATA/'lambda_latitude.csv').sort_values('latitude')
+z=np.load(DATA/'lambda_maps.npz')
 plt.rcParams.update({'font.family':'serif','font.size':12,'pdf.fonttype':42})
 fig,axes=plt.subplots(1,2,figsize=(11,3.8))
 color='#AA3377'

@@ -4,7 +4,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 P=Path(__file__).resolve().parent
-d=pd.read_csv(P/'latitude_metrics.csv')
+DATA=P.parents[1]/'data'
+d=pd.read_csv(DATA/'latitude_metrics.csv')
 plt.rcParams.update({'font.family':'serif','font.size':12,'pdf.fonttype':42})
 colors={'PGFM':'#EE6677','FMB':'#4477AA','ConvLSTM':'#66CCEE','STGP':'#228833'}
 fig,axes=plt.subplots(1,3,figsize=(12,3.8))

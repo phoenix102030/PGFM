@@ -5,8 +5,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 P=Path(__file__).resolve().parent
+DATA=P.parents[1]/'data'
 parser=argparse.ArgumentParser();parser.add_argument('--frame',type=int,default=0);args=parser.parse_args()
-z=np.load(P/'velocity_fields.npz');f=args.frame
+z=np.load(DATA/'velocity_fields.npz');f=args.frame
 if not 0<=f<24:raise ValueError('frame must be 0..23')
 plt.rcParams.update({'font.family':'serif','font.size':12,'pdf.fonttype':42})
 weight=1-z['lambda_map'][f]

@@ -8,13 +8,14 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 
 P = Path(__file__).resolve().parent
+DATA = P.parents[1] / 'data'
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--frame', type=int, default=14)
     parser.add_argument('--vmax', type=float, default=10.)
     args = parser.parse_args()
-    with np.load(P / 'op_net_maps.npz') as z:
+    with np.load(DATA / 'op_net_maps.npz') as z:
         lat, lon = z['lat'], z['lon']
         times = z['time']
         if not 0 <= args.frame < len(times):

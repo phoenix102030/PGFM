@@ -5,11 +5,11 @@ __pycache__/
 .venv/
 build/
 dist/
-/data/
 /outputs/
 *.pt
 *.pth
 *.npz
+!/data/*.npz
 *.npy
 *.nc
 .pytest_cache/

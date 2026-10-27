@@ -6,12 +6,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent
+DATA = ROOT.parents[1] / 'data'
 COLORS = {'PGFM':'#EE6677','FMB':'#4477AA','Oracle':'#AA3377','ConvLSTM':'#66CCEE','STGP':'#228833'}
 MARKERS = {'PGFM':'D','FMB':'o','Oracle':'s','ConvLSTM':'+','STGP':'^'}
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--input',type=Path,default=ROOT/'all_models_24h_error.csv')
+    parser.add_argument('--input',type=Path,default=DATA/'all_models_24h_error.csv')
     parser.add_argument('--output',type=Path,default=None)
     args=parser.parse_args()
     frame=pd.read_csv(args.input)

@@ -98,8 +98,8 @@ with relative-error metrics. Deterministic CRPS equals MAE.
 
 ## Visualization
 
-The [visualization](visualization/) directory contains scripts, plotting data and
-exported figures for the model results:
+The [visualization](visualization/) directory contains plotting scripts and
+exported figures for the model results. Their input files are stored in [data](data/):
 
 - `errors/`: forecast errors across the 24-hour horizon.
 - `latitude/`: error metrics by latitude, with background TEC profiles.
